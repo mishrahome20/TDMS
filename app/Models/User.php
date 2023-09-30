@@ -41,5 +41,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'status'  => \App\enum\UserStatus::class,
+        'is_super_admin'    => \App\enum\UserRole::class,
     ];
 }
