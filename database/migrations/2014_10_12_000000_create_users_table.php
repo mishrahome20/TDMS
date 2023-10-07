@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('token')->nullable();
             $table->enum('status',['0','1'])->default(\App\enum\UserStatus::ACTIVE)->comment('0 = Inactive and 1 => Active');
             $table->enum('is_super_admin',['0','1'])->default(\App\enum\UserRole::NORMAL)->comment('0 => normal && 1 => Admin');
+            $table->foreignId('department_id')->nullable()->constrained('departments');
             $table->rememberToken();
             $table->timestamps();
         });

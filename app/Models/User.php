@@ -27,6 +27,7 @@ class User extends Authenticatable
         'created_by',
         'updated_by',
         'status',
+        'department_id',
     ];
 
     /**
