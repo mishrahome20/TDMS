@@ -6,6 +6,7 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Jobs\User\RegisterMail;
 use App\Models\Department;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -42,5 +43,20 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.index')->with('success','User successfully created');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     * Generating PDF File of User Details
+     */
+    public function pdfGenerator()
+    {
+        $user = User::select('name','code','email','phone','status')
+                        ->where('is_super_admin','0')
+                        ->get();
+        $pdf = Pdf::loadView('user.pdf',[
+            'users' => $user,
+        ]);
+       return $pdf->stream('User-Details'.date('ymdhis').rand(0,99999999).'.pdf');
     }
 }

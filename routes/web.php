@@ -29,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('users/pdf-generate',[UserController::class,'pdfGenerator'])->name('users.pdf.download');
     Route::resource('users', UserController::class);
+
     Route::resource('departments', DepartmentController::class);
 });
 

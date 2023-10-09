@@ -13,7 +13,7 @@
                </x-secondary-button>
            </div>
            <div class="text-start">
-               <x-secondary-button href="#" class="bg-white shadow-lg">Generate PDF </x-secondary-button>
+               <x-tag-href type="submit" href="{{ route('users.pdf.download') }}" class="bg-white shadow-lg" target="_blank">Generate PDF </x-tag-href>
            </div>
        </div>
        </div>
