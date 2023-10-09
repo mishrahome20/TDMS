@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use http\Env\Request;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,7 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(\Illuminate\Http\Request $request): void
     {
         $this->ensureIsNotRateLimited();
 

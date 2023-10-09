@@ -26,7 +26,16 @@
                     </div>
                 </header>
             @endif
-
+            @if (session()->has('success'))
+                <div class="fade fixed z-50 w-full max-w-sm p-3 transition-all transform bg-green-700 rounded-lg shadow-xl bounce left-1/2 top-3" role="alert" >
+                    <strong class="text-white">{{ session()->get('success') }}</strong>
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="fade fixed z-50 w-full max-w-sm p-3 transition-all transform bg-red-500 rounded-lg shadow-xl bounce left-1/2 top-3" role="alerts" >
+                    <strong class="text-white">{{ session()->get('error') }}</strong>
+                </div>
+            @endif
             <!-- Page Content -->
             <main>
                 {{ $slot }}

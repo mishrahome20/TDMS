@@ -39,7 +39,7 @@ class UserController extends Controller
         if ($user) {
             $user->token = $token;
             $user->save();
-            RegisterMail::dispatch($user)->delay(now()->addMinutes(5));
+            RegisterMail::dispatch($user);
         }
 
         return redirect()->route('users.index')->with('success','User successfully created');

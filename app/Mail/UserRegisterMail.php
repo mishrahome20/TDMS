@@ -29,7 +29,7 @@ class UserRegisterMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from : new Address('acharyakeshab20@gmail.com','Mishrahome'),
+            from : new Address('acharyakeshab20@gmail.com','MishraHome'),
             subject: 'Registration Details Email',
         );
     }

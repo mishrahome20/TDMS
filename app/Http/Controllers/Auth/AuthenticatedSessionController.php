@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,9 +16,32 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request)
     {
-        return view('auth.login');
+        if ($request->has('token')) {
+
+            $token = $request->get('token');
+
+            $user = User::where('token', $token)->first();
+            if ($user) {
+                $tokenDate = $user->created_at;
+                if ($tokenDate > now()->addDays(2)) {
+                    session()->put('error','Unauthorized User');
+                    return redirect()->back();
+                }
+
+                $user->token = '';
+                $user->save();
+                Auth::login($user);
+                return redirect()->route('dashboard')->with('success', 'User Logged In Successfully');
+            } else {
+                session()->put('error','Unauthorized User');
+                return redirect()->route('login');
+            }
+
+        } else {
+            return view('auth.login');
+        }
     }
 
     /**
@@ -25,7 +49,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate($request);
 
         $request->session()->regenerate();
 
