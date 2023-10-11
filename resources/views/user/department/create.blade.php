@@ -26,7 +26,7 @@
                 <div class="grid grid-cols-3 px-6 pb-4 text-center">
                     <div></div>
                     <div>
-                        <x-danger-button type="submit" class="">Create Department</x-danger-button>
+                        <x-primary-button type="submit">Create Department</x-primary-button>
                     </div>
                     <div></div>
                 </div>

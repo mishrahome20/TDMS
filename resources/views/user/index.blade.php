@@ -45,10 +45,10 @@
                 @endif
             </div>
             <div class="bg-gray-200 px-4 py-3 text-right">
-                <x-secondary-button x-on:click="$dispatch('close')" id="create_modal_cancel_button">
+                <x-danger-button x-on:click="$dispatch('close')" id="create_modal_cancel_button">
                     {{ __('Cancel') }}
-                </x-secondary-button>
-                <x-danger-button type="submit">Create</x-danger-button>
+                </x-danger-button>
+                <x-primary-button type="submit">Create</x-primary-button>
             </div>
         </form>
     </x-modal>
