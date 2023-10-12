@@ -18,4 +18,9 @@ class Task extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function taskType()
+    {
+        return $this->belongsToMany(TaskType::class,'task_pivot_types','task_id','task_type_id');
+    }
 }

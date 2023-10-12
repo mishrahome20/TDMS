@@ -42,6 +42,20 @@
                 </div>
                 <div class="grid grid-cols-1 gap-4">
                     <div>
+                        <label class="font-medium text-gray-800">Task Type</label>
+                        <select name="tasktype[]" multiple id="tasktype" class="w-full shadow">
+                            <option value="">Select Task Type</option>
+                            @if($tasktypes->isNotEmpty())
+                                @foreach($tasktypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->tasktype }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
                         <label class="font-medium text-gray-800">Project</label>
                         @if($projects->isNotEmpty())
                             <select name="project_id" id="project_id" class="w-full shadow-2xl">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Task\CreateTaskRequest;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +17,10 @@ class TaskController extends Controller
     public function index()
     {
         $projects = Project::latest()->get();
+        $tasktypes = TaskType::latest()->get();
         return view('task.index',[
             'projects' => $projects,
+            'tasktypes' => $tasktypes,
         ]);
     }
 
@@ -44,6 +47,7 @@ class TaskController extends Controller
             'created_by'    => $user,
             'updated_by'    => $user,
         ]);
+        $task->taskType()->attach($request->tasktype);
         return redirect()->route('tasks.index')->with('success','Task successfully created');
     }
 

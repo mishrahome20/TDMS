@@ -4,14 +4,14 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTaskRequest extends FormRequest
+class CreateTaskTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,12 +22,7 @@ class CreateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'description'   => 'required',
-            'deadline'  => 'required|date|after_or_equal:today',
-            'priority'  => 'required|in:0,1,2',
-            'project_id'    => 'required|exists:projects,id',
-            'tasktype'      => 'required',
+            //
         ];
     }
 }
