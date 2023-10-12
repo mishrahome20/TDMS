@@ -37,8 +37,8 @@
     </x-modal>
     <script>
         //Removing Project modal's value while clicking the cancel button of modal
-        document.addEventListener("DOMContentLoaded",function() {
-
+        document.addEventListener("DOMContentLoaded",function(e) {
+            e.preventDefault();
             let ProjectTitle = document.getElementById('title');
             let ProjectDescription = document.getElementById('description');
             let ProjectCreateModalCancelButton = document.getElementById('project_create_modal_cancel_button');
