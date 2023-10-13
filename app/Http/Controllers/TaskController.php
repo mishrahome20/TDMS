@@ -6,6 +6,7 @@ use App\Http\Requests\Task\CreateTaskRequest;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,9 +19,11 @@ class TaskController extends Controller
     {
         $projects = Project::latest()->get();
         $tasktypes = TaskType::latest()->get();
+        $users = User::latest()->get();
         return view('task.index',[
-            'projects' => $projects,
-            'tasktypes' => $tasktypes,
+            'projects'      => $projects,
+            'tasktypes'     => $tasktypes,
+            'users'         => $users
         ]);
     }
 
@@ -39,15 +42,38 @@ class TaskController extends Controller
     {
         $user = Auth::user()->id;
         $task = Task::create([
-            'title' => $request->title,
+            'title'         => $request->title,
             'description'   => $request->description,
-            'deadline'  => $request->deadline,
-            'priority'  => $request->priority,
+            'deadline'      => $request->deadline,
+            'priority'      => $request->priority,
             'project_id'    => $request->project_id,
             'created_by'    => $user,
             'updated_by'    => $user,
         ]);
+
         $task->taskType()->attach($request->tasktype);
+
+       $assigner = $request->assigne ?? [];
+       $reviewer = $request->reviwer ?? [];
+
+        foreach ($assigner as $assigne)
+        {
+            $task->collaborator()->create([
+                'task_id'       => $task->id,
+                'flag'          => '0',
+                'collaborators' => $assigne,
+            ]);
+        }
+
+        foreach ($reviewer as $reviwer)
+        {
+            $task->collaborator()->create([
+                'task_id'       => $task->id,
+                'flag'          => '1',
+                'collaborators' => $reviwer,
+            ]);
+        }
+
         return redirect()->route('tasks.index')->with('success','Task successfully created');
     }
 

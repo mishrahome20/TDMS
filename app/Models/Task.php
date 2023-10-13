@@ -23,4 +23,9 @@ class Task extends Model
     {
         return $this->belongsToMany(TaskType::class,'task_pivot_types','task_id','task_type_id');
     }
+
+    public function collaborator()
+    {
+        return $this->hasMany(Collaborators::class,'task_id');
+    }
 }
