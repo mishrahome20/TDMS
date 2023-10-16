@@ -30,6 +30,7 @@ class CreateTaskRequest extends FormRequest
             'tasktype'      => 'required',
             'assigne'       => 'required',
             'reviwer'       => 'required',
+            'attachments.*'  => 'required',
         ];
     }
 }

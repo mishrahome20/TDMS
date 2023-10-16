@@ -18,7 +18,7 @@
     </div>
     {{--    Modal for Storing Project--}}
     <x-modal name="task-store-modal">
-        <form action="{{ route('tasks.store') }}" method="post">
+        <form action="{{ route('tasks.store') }}" method="post" enctype="multipart/form-data">
             <h2 class="text-center pt-5 text-lg">Create User</h2>
             @csrf
             <div class="bg-white px-4  pb-4 sm:p-6 sm:pb-4">
@@ -94,7 +94,15 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="font-medium text-gray-800">Attachment</label>
+                        <x-text-input type="file" class="w-full" name="attachments[]" id="attachments" multiple></x-text-input>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4" id="attachment_display">
+                    <p></p>
+                </div>
             </div>
             <div class="bg-gray-200 px-4 py-3 text-right">
                 <x-danger-button x-on:click="$dispatch('close')" id="task_create_modal_cancel_button" type="button">
@@ -104,5 +112,25 @@
             </div>
         </form>
     </x-modal>
-    {{--    Modal for storing Project--}}
+    <script>
+        let ChooseTaskAttachment = document.getElementById('attachments');
+        let DisplayTaskAttachment = document.getElementById('attachment_display');
+        document.addEventListener("DOMContentLoaded",function() {
+            ChooseTaskAttachment.addEventListener('change', (event) => {
+                event.preventDefault();
+                let Attachments = event.target.files;
+                console.log(Attachments);
+                DisplayTaskAttachment.innerHTML = '';
+                DisplayTaskAttachment.className = 'bg-gray-100 shadow rounded item-center mt-3 py-3 px-3';
+                let fileList = document.createElement('ul');
+                for (const file of Attachments)
+                {
+                    let listItem = document.createElement('li');
+                    listItem.textContent = file.name;
+                    fileList.appendChild(listItem);
+                }
+                DisplayTaskAttachment.appendChild(fileList);
+            });
+        })
+    </script>
 </x-app-layout>

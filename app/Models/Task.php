@@ -28,4 +28,9 @@ class Task extends Model
     {
         return $this->hasMany(Collaborators::class,'task_id');
     }
+
+    public function TaskAttachment()
+    {
+        return $this->hasMany(Attachment::class,'task_id');
+    }
 }

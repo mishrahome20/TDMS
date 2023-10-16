@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\CreateTaskRequest;
+use App\Models\Attachment;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskType;
@@ -40,7 +41,11 @@ class TaskController extends Controller
      */
     public function store(CreateTaskRequest $request)
     {
+
+        //Fetching Authenticated user ID
         $user = Auth::user()->id;
+
+        //Creating task
         $task = Task::create([
             'title'         => $request->title,
             'description'   => $request->description,
@@ -51,11 +56,32 @@ class TaskController extends Controller
             'updated_by'    => $user,
         ]);
 
+        //Adding taskType in the table
         $task->taskType()->attach($request->tasktype);
+
+        //Adding Attachment to the task only when task has attachment
+        if ($request->has('attachments'))
+        {
+            $attachments1 = $request->file('attachments');
+            foreach ($attachments1 as $attachment)
+            {
+                $extension = $attachment->getClientOriginalExtension();
+                $name = 'task-'.date('ymdhis').'-'.rand(0,99999999).'.'.$extension;
+                $attachment->move(storage_path('app/public/task'),$name);
+                $taskAttachment = new Attachment();
+                $taskAttachment->attachment = $name;
+                $taskAttachment->task_id = $task->id;
+                $taskAttachment->flag = '0';
+                $taskAttachment->save();
+            }
+
+            return redirect()->back()->with('success','Task successfully created');
+        }
 
        $assigner = $request->assigne ?? [];
        $reviewer = $request->reviwer ?? [];
 
+       //Assigning Assigne to the Task
         foreach ($assigner as $assigne)
         {
             $task->collaborator()->create([
@@ -65,6 +91,7 @@ class TaskController extends Controller
             ]);
         }
 
+        //Assigning Reviewer to the Task
         foreach ($reviewer as $reviwer)
         {
             $task->collaborator()->create([
@@ -73,7 +100,7 @@ class TaskController extends Controller
                 'collaborators' => $reviwer,
             ]);
         }
-
+        //Redirecting user to the Task List page when task is created successfully
         return redirect()->route('tasks.index')->with('success','Task successfully created');
     }
 
